@@ -5,8 +5,8 @@ const request = require('request-promise-native');
 
 const MoltinGateway = require('@moltin/sdk').gateway;
 const Moltin = MoltinGateway({
-  client_id: process.env.MOLTIN_CLIENT_ID,
-  client_secret: process.env.MOLTIN_CLIENT_SECRET
+  client_id: "cUqaYdFIydYnbNdvdqYuYF88bPwVuBJUHFwSw6O53N",
+  client_secret: "0HuhaPDNu6fOemh6veSTT80kV3KBWGmFs8QVU27yAi"
 });
 
 /*
@@ -22,7 +22,7 @@ const authenticate = async function(storage) {
 /*
 Augmenting JS SDK with the CreateRelationships function for categories.
 
-The buildRelationshipData is not publicly exposed through the API 
+The buildRelationshipData is not publicly exposed through the API
 so we will expect resources to be of the following shape:
   [{ type: 'type', id: 'id'}]
 

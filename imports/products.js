@@ -54,7 +54,7 @@ module.exports = async function(path, catalog) {
       let productM = await Moltin.Products.Create({
         type: 'product',
         name: product.name,
-        slug: product.name.toLowerCase().replace(' ', '-'),
+        slug: product.name.toLowerCase().replace(/[^A-Z0-9]/ig, "_"),
         status: 'live',
         price: [
           {
@@ -123,7 +123,7 @@ module.exports = async function(path, catalog) {
         const variantM = await Moltin.Products.Create({
           type: 'product',
           name: variant.name,
-          slug: variant.name.toLowerCase().replace(' ', '-') + `_${index + 1}`,
+          slug: variant.name.toLowerCase().replace(/[^A-Z0-9]/ig, "_") + `_${index + 1}`,
           status: 'live',
           price: [
             {
