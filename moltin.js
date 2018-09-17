@@ -5,8 +5,8 @@ const request = require('request-promise-native');
 
 const MoltinGateway = require('@moltin/sdk').gateway;
 const Moltin = MoltinGateway({
-  client_id: "cUqaYdFIydYnbNdvdqYuYF88bPwVuBJUHFwSw6O53N",
-  client_secret: "0HuhaPDNu6fOemh6veSTT80kV3KBWGmFs8QVU27yAi"
+  client_id: 'cUqaYdFIydYnbNdvdqYuYF88bPwVuBJUHFwSw6O53N',
+  client_secret: '0HuhaPDNu6fOemh6veSTT80kV3KBWGmFs8QVU27yAi'
 });
 
 /*
