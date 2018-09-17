@@ -12,7 +12,7 @@ module.exports = async function(path, catalog) {
       type: 'category',
       name: category.name,
       description: category.name,
-      slug: category.name.toLowerCase(),
+      slug: category.name.toLowerCase().replace(/\s+/g, ''),
       status: 'live'
     });
 
@@ -32,7 +32,7 @@ module.exports = async function(path, catalog) {
         type: 'category',
         name: subCategory.name,
         description: subCategory.name,
-        slug: subCategory.name.toLowerCase(),
+        slug: subCategory.name.toLowerCase().replace(/\s+/g, ''),
         status: 'live'
       });
 
