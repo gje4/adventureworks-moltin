@@ -15,8 +15,8 @@ const utf16Multiline = {
 
 //take in feeds
 const readCsvToArray = function(file, columns, opts) {
-  console.log("columns", columns)
-  console.log("file", file)
+  console.log('columns', columns);
+  console.log('file', file);
 
   // Pulling data out of the files
   const options = Object.assign(
@@ -27,7 +27,6 @@ const readCsvToArray = function(file, columns, opts) {
       strip: false,
       skip_lines_with_error: true,
       relax_column_count: true
-
     },
     opts
   );
@@ -67,48 +66,87 @@ const readCsvToArray = function(file, columns, opts) {
 };
 
 module.exports = async function(path = '.') {
-
-
   if (!argv.skip('preprocess-csv')) {
     // Preprocess ProductModel.csv so that csv parser could understand it
-    console.log('Patching ProductModel.csv');
     await preprocess(`${path}/hybrisdata.csv`, { encoding: 'utf16le' }, [
       /<root.+?>[\s\S]+?<\/root>/gm,
       /<p1:ProductDescription.+?>[\s\S]+?<\/p1:ProductDescription>/gm,
       /<\?.+?\?>/g
     ]);
-  console.log('step 1');
-
+    console.log('step 1');
 
     // if you want to data enrich the product data
     // Preprocess ProductDescription.csv so that csv parser could understand it
-    console.log('Patching ProductDescription.csv');
-    await preprocess(
-      `${path}/hybrisdata.csv`,
-      { encoding: 'utf16le' },
-      [/"/g]
-    );
-}
+    await preprocess(`${path}/hybrisdata.csv`, { encoding: 'utf16le' }, [/"/g]);
+  }
   //need to be able to take in the objects we want to use
   const [
     //objects in order of maps
     categories,
     products
-    ] = await Promise.all([
+  ] = await Promise.all([
     //source data to parse
-    readCsvToArray(`${path}/hybrisdata.csv`,
-      ['sku','title','description','category','buy_url','mobile_url','image_url','instock','price','availability_date','currency','brand','mpn','gtin','condition','size','size_system','shipping_weight','shipping_length','shipping_width','shipping_height','online_local_flag','is_bundle','price_range','KOI_Flag','MAP_Flag']
-    ),
+    readCsvToArray(`${path}/hybrisdata.csv`, [
+      'sku',
+      'title',
+      'description',
+      'category',
+      'buy_url',
+      'mobile_url',
+      'image_url',
+      'instock',
+      'price',
+      'availability_date',
+      'currency',
+      'brand',
+      'mpn',
+      'gtin',
+      'condition',
+      'size',
+      'size_system',
+      'shipping_weight',
+      'shipping_length',
+      'shipping_width',
+      'shipping_height',
+      'online_local_flag',
+      'is_bundle',
+      'price_range',
+      'KOI_Flag',
+      'MAP_Flag'
+    ]),
     //product object example
-    readCsvToArray(
-      `${path}/hybrisdata.csv`,
-      ['sku','title','description','category','buy_url','mobile_url','image_url','instock','price','availability_date','currency','brand','mpn','gtin','condition','size','size_system','shipping_weight','shipping_length','shipping_width','shipping_height','online_local_flag','is_bundle','price_range','KOI_Flag','MAP_Flag']
-        )
+    readCsvToArray(`${path}/hybrisdata.csv`, [
+      'sku',
+      'title',
+      'description',
+      'category',
+      'buy_url',
+      'mobile_url',
+      'image_url',
+      'instock',
+      'price',
+      'availability_date',
+      'currency',
+      'brand',
+      'mpn',
+      'gtin',
+      'condition',
+      'size',
+      'size_system',
+      'shipping_weight',
+      'shipping_length',
+      'shipping_width',
+      'shipping_height',
+      'online_local_flag',
+      'is_bundle',
+      'price_range',
+      'KOI_Flag',
+      'MAP_Flag'
+    ])
   ]);
 
-console.log("invetory", products)
-console.log("cat", categories)
-
+  console.log('invetory', products);
+  console.log('cat', categories);
 
   //The objects that are returned
   return {

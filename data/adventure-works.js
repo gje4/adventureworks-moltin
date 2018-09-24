@@ -14,7 +14,6 @@ const utf16Multiline = {
 };
 
 const readCsvToArray = function(file, columns, opts) {
-
   // Pulling data out of the files
   const options = Object.assign(
     {
@@ -220,10 +219,10 @@ module.exports = async function(path = '.') {
     ])
   ]);
 
-console.log("invetory", products)
-console.log("variants", variants)
+  console.log('invetory', products);
+  console.log('variants', variants);
 
-console.log("cat", categories)
+  console.log('cat', categories);
 
   // Organize categories into a hierarchy
   console.log('Organizing categories into a hierarchy');
@@ -260,7 +259,7 @@ console.log("cat", categories)
   // Attach product descriptions, variants, and resolve modifiers
   console.log('Assigning description, variants, and modifiers to products');
 
-//product data enrichment, not needed
+  //product data enrichment, not needed
   const noDescription = { description: 'Description not available' };
   for (let product of products) {
     const { description } = descriptionLinks
@@ -300,7 +299,6 @@ console.log("cat", categories)
   for (let line of orderDetails) {
     line.sku = variants.find(variant => variant.id === line.productId).sku;
   }
-
 
   //The objects that are returned
   return {

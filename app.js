@@ -31,7 +31,7 @@ const Moltin = require('./moltin');
     }
   }
 
-//then look to Adding
+  //then look to Adding
   for (let entity of Object.keys(imports)) {
     if (!argv.skip(entity)) {
       console.log('Importing %s', entity);
