@@ -25,6 +25,7 @@ const isRequested = (arg, value) => {
 };
 
 module.exports = {
+  //Where the data lives
   path,
   clean: entity => isRequested('clean', entity),
   skip: step => isRequested('skip', step)

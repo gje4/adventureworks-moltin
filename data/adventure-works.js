@@ -6,6 +6,7 @@ const preprocess = require('./preprocess');
 const argv = require('../argv');
 
 const utf16Multiline = {
+  //formatting
   encoding: 'utf16le',
   strip: true,
   delimiter: '|',
@@ -13,6 +14,8 @@ const utf16Multiline = {
 };
 
 const readCsvToArray = function(file, columns, opts) {
+
+  // Pulling data out of the files
   const options = Object.assign(
     {
       encoding: 'ascii',
@@ -57,10 +60,12 @@ const readCsvToArray = function(file, columns, opts) {
 
 module.exports = async function(path = '.') {
   // Pre-process Adventure Works images (save GIFs to PNG)
+  //can skip formatting
   if (!argv.skip('convert-images')) {
     await convertImages(path);
   }
 
+  //need to remove
   if (!argv.skip('preprocess-csv')) {
     // Preprocess ProductModel.csv so that csv parser could understand it
     console.log('Patching ProductModel.csv');
@@ -70,6 +75,7 @@ module.exports = async function(path = '.') {
       /<\?.+?\?>/g
     ]);
 
+    //if you want to data enrich the product data
     // Preprocess ProductDescription.csv so that csv parser could understand it
     console.log('Patching ProductDescription.csv');
     await preprocess(
@@ -80,6 +86,7 @@ module.exports = async function(path = '.') {
   }
 
   const [
+    //objects in order of maps
     categories,
     subCategories,
     products,
@@ -91,6 +98,7 @@ module.exports = async function(path = '.') {
     orderHeaders,
     orderDetails
   ] = await Promise.all([
+    //source data to parse
     readCsvToArray(`${path}/ProductCategory.csv`, [
       'id',
       'name',
@@ -104,6 +112,7 @@ module.exports = async function(path = '.') {
       'guid',
       'date'
     ]),
+    //product object example
     readCsvToArray(
       `${path}/ProductModel.2.csv`,
       ['id', 'name', 'description', 'instructions', 'guid', 'modified'],
@@ -211,9 +220,16 @@ module.exports = async function(path = '.') {
     ])
   ]);
 
+console.log("invetory", products)
+console.log("variants", variants)
+
+console.log("cat", categories)
+
   // Organize categories into a hierarchy
   console.log('Organizing categories into a hierarchy');
 
+  // sub cats to parents, not needed
+  //need to remove the varient parts
   for (let category of categories) {
     category.children = subCategories.filter(
       item => item.parent === category.id
@@ -244,6 +260,7 @@ module.exports = async function(path = '.') {
   // Attach product descriptions, variants, and resolve modifiers
   console.log('Assigning description, variants, and modifiers to products');
 
+//product data enrichment, not needed
   const noDescription = { description: 'Description not available' };
   for (let product of products) {
     const { description } = descriptionLinks
@@ -259,6 +276,7 @@ module.exports = async function(path = '.') {
       variant => variant.model === product.id && !!variant.category
     );
 
+    //look to use for building product matrixs
     product.modifiers = ['color', 'size']
       .map(mod => ({
         title: mod,
@@ -266,6 +284,8 @@ module.exports = async function(path = '.') {
       }))
       .filter(mod => mod.values.length > 0 && mod.values.every(v => !!v));
   }
+
+  //ORDER STUFFFFFF
 
   // Attach order line items to the order headers
   console.log('Organizing orders into a hierarchy');
@@ -281,6 +301,8 @@ module.exports = async function(path = '.') {
     line.sku = variants.find(variant => variant.id === line.productId).sku;
   }
 
+
+  //The objects that are returned
   return {
     inventory: products,
     categories,

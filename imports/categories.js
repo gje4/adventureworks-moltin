@@ -5,48 +5,34 @@ const fs = require('fs');
 const csv = require('csv');
 
 module.exports = async function(path, catalog) {
-  for (let category of catalog.categories) {
-    console.log('Creating category %s', category.name);
+  var uniqueCategory = removeDuplicates(catalog.categories, "category");
+
+  for (let category of uniqueCategory) {
+    console.log('Creating category %s', category.category);
 
     const categoryM = await Moltin.Categories.Create({
       type: 'category',
-      name: category.name,
-      description: category.name,
-      slug: category.name.toLowerCase().replace(/[^A-Z0-9]/gi, '_'),
+      name: category.category.replace(/[^A-Z0-9]/gi, '_'),
+      description: category.category,
+      slug: category.category.replace(/[^A-Z0-9]/gi, '_'),
       status: 'live'
     });
+//TODO sub category logic
 
-    if (category.children.length === 0) {
-      continue;
-    }
-
-    const subCategoriesM = [];
-    for (let subCategory of category.children) {
-      console.log(
-        'Creating a category %s -> %s',
-        category.name,
-        subCategory.name
-      );
-
-      const subCategoryM = await Moltin.Categories.Create({
-        type: 'category',
-        name: subCategory.name,
-        description: subCategory.name,
-        slug: subCategory.name.toLowerCase().replace(/[^A-Z0-9]/gi, '_'),
-        status: 'live'
-      });
-
-      subCategoriesM.push(subCategoryM);
-    }
-
-    console.log('Creating parent -> child relationships for %s', category.name);
-    await Moltin.Categories.CreateRelationships(
-      categoryM.data.id,
-      'children',
-      subCategoriesM.map(child => ({
-        type: 'category',
-        id: child.data.id
-      }))
-    );
   }
+
+  function removeDuplicates(originalArray, prop) {
+     var newArray = [];
+     var lookupObject  = {};
+
+     for(var i in originalArray) {
+        lookupObject[originalArray[i][prop]] = originalArray[i];
+     }
+
+     for(i in lookupObject) {
+         newArray.push(lookupObject[i]);
+     }
+      return newArray;
+ }
+
 };

@@ -50,9 +50,8 @@ Recursively delete all records to clean up the catalog
 const removeAll = function() {
   const clean = async () => {
     const { data, meta } = await this.All();
-
-    const total = meta && meta.results ? meta.results.all : data.length;
-    const current = meta && meta.results ? meta.results.total : data.length;
+    const total = meta && meta.results ? meta.results.total : data.length;
+    const current = data.length;
 
     console.log('Processing the first %s of %s total', current, total);
 
