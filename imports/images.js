@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 
-const fs = require('fs');
-const _ = require('lodash');
-const Moltin = require('../moltin');
-const request = require('request');
-const download = require('image-downloader');
-const convertImages = require('../data/convert-images');
-const path = require('path');
+const fs = require("fs");
+const _ = require("lodash");
+const Moltin = require("../moltin");
+const request = require("request");
+const download = require("image-downloader");
+const convertImages = require("../data/convert-images");
+const path = require("path");
 
 module.exports = async function(path, products) {
   // there are only 42 unique images in AW
@@ -14,12 +14,12 @@ module.exports = async function(path, products) {
   const imagesM = await Moltin.Files.All();
 
   for (let image of products) {
-    console.log('Uploading %s', image.image_url);
+    console.log("Uploading %s", image.image_url);
     var fileFormat = image.image_url;
     const dest = `data/temp/${image.sku}.jpg`;
 
-    if (image.image_url != 'image_url') {
-      var fileFormat = '.jpg';
+    if (image.image_url != "image_url") {
+      var fileFormat = ".jpg";
       const options = {
         url: image.image_url,
         dest: dest
@@ -29,7 +29,7 @@ module.exports = async function(path, products) {
       await download
         .image(options)
         .then(({ filename, image }) => {
-          console.log('File saved to', filename);
+          console.log("File saved to", filename);
           try {
             const imageM = Moltin.Files.Create(filename);
             //Delete all the files from localstorage
@@ -49,10 +49,10 @@ module.exports = async function(path, products) {
           }
         })
         .catch(err => {
-          console.error('error', err);
+          console.error("error", err);
         });
     } else {
-      console.log('skip %s', image.image_url);
+      console.log("skip %s", image.image_url);
     }
   }
 

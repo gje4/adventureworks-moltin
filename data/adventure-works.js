@@ -28,8 +28,7 @@ const readCsvToArray = function(file, columns, opts) {
   return new Promise((resolve, reject) => {
     const result = [];
 
-    fs
-      .createReadStream(`${file}`, { encoding: options.encoding })
+    fs.createReadStream(`${file}`, { encoding: options.encoding })
       .pipe(
         csv.parse({
           delimiter: options.delimiter,
