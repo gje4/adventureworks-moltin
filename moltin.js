@@ -54,13 +54,12 @@ const removeAll = function() {
     const current = data.length;
 
     console.log('Processing the first %s of %s total', current, total);
-
     for (let item of data) {
-      // console.log(
-      //   'Requesting a delete of %s - %s',
-      //   item.name || item.code,
-      //   item.id
-      // );
+      console.log(
+        'Requesting a delete of %s - %s',
+        item.name || item.code,
+        item.id
+      );
 
       try {
         await this.Delete(item.id);
@@ -79,7 +78,9 @@ const removeAll = function() {
   return clean();
 };
 
+//Delete all
 Moltin.Categories.RemoveAll = removeAll;
+Moltin.Brands.RemoveAll = removeAll;
 Moltin.Products.RemoveAll = removeAll;
 Moltin.Currencies.RemoveAll = removeAll;
 

@@ -5,24 +5,24 @@ const fs = require('fs');
 const csv = require('csv');
 
 module.exports = async function(path, catalog) {
-  var uniqueCategory = removeDuplicates(catalog.categories, 'category');
+  var uniqueBrand = removeDuplicates(catalog.brands, 'brand');
 
-  for (let category of uniqueCategory) {
-    console.log('Creating category %s', category.category);
-    if (category.category != 'category') {
-    const categoryM = await Moltin.Categories.Create({
-      type: 'category',
-      name: category.category,
-      description: category.category,
-      slug: category.category.replace(/[^A-Z0-9]/gi, '_'),
+  for (let brand of uniqueBrand) {
+    console.log('Creating brand %s', brand.brand);
+    if (brand.brand != 'brand') {
+    const brandM = await Moltin.Brands.Create({
+      type: 'brand',
+      name: brand.brand,
+      description: brand.brand,
+      slug: brand.brand.replace(/[^A-Z0-9]/gi, '_'),
       status: 'live'
     });
+    //TODO sub brand logic
   }
-    else {
+  else {
       console.log("skip");
     }
-    //TODO sub category logic
-  }
+}
 
   function removeDuplicates(originalArray, prop) {
     var newArray = [];

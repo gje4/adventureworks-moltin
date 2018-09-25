@@ -7,15 +7,15 @@ const advw = require('./data/adventure-works');
 const hybris = require('./data/hybris');
 
 const imports = {
-  // currencies: require('./imports/currencies'),
+  //order matters
+  files: require('./imports/images'),
+  brands: require('./imports/brands'),
   categories: require('./imports/categories'),
   products: require('./imports/products')
 };
 
 //TODO form paramters
-// dataMapPassed
 const argv = require('./argv');
-
 const Moltin = require('./moltin');
 
 (async function() {
@@ -24,7 +24,7 @@ const Moltin = require('./moltin');
   const catalog = await hybris(argv.path);
 
   //then look to delete
-  for (let entity of ['Products', 'Variations', 'Categories', 'Files']) {
+  for (let entity of ['Products', 'Variations', 'Brands', 'Categories', 'Files']) {
     if (argv.clean(entity.toLowerCase())) {
       console.log('Catalog cleanup: removing %s', entity);
       await Moltin[entity].RemoveAll();
